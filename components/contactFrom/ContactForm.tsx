@@ -15,8 +15,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { z } from "zod";
 import { Button } from "../ui/button";
+import { sendEmail } from "@/app/api/send/route";
 
 const ContactForm = () => {
+  const { reset } = useForm();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,6 +30,8 @@ const ContactForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+    await sendEmail(values);
+    reset();
   }
 
   return (
